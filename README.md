@@ -1,11 +1,10 @@
 # temperatures
 
 ## To Do
-- [x] Read temperatures and save to local database
-- [ ] Design "protocol" (ecrypted JSON)
-- [ ] Create API for webserver
-- [ ] Update webserver through API
-- [ ] Update central database periodically with high res data
+- Design "protocol" (ecrypted JSON)
+- Create API for webserver
+- Update webserver through API
+- Update central database periodically with high res data
 
 ## client-scripts
 Scripts running on the client side
