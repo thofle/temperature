@@ -1,5 +1,10 @@
 # temperatures
 
+## Requisites
+- Raspberry Pi or similar
+- w1-gpio & w1-therm
+- DS18B20 sensor(s)
+
 ## To Do
 - Design "protocol" (ecrypted JSON)
 - Create API for webserver
