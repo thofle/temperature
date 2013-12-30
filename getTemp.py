@@ -1,6 +1,5 @@
 import sqlite3
 import time
-import urllib2
 import glob
 
 base_dir = '/sys/bus/w1/devices/'
