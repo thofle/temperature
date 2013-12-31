@@ -1,3 +1,8 @@
+#
+# Based on article from Adafruit by Simon Monk
+# http://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/software
+#
+
 import sqlite3
 import time
 import glob
