@@ -47,7 +47,7 @@ def encrypt_secret_key(rsa_key, secret_key):
 def decrypt_secret_key(rsa_key, encrypted_secret_key):
 	decrypted = rsa_key.decrypt(encrypted_secret_key)
 	# Remove padding
-	secret_key = decrypted[(511 - CRYPTO_SYMMETRIC_KEY_LENGTH):]
+	secret_key = decrypted[(len(decrypted) - CRYPTO_SYMMETRIC_KEY_LENGTH):]
 	return bytes(secret_key)
 	
 secret_key = os.urandom(CRYPTO_SYMMETRIC_KEY_LENGTH)
