@@ -1,7 +1,5 @@
 import os
-import base64
 import Crypto.Util.number
-import json
 from Crypto.Cipher import DES3
 from Crypto.PublicKey import RSA
 
