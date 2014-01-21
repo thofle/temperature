@@ -9,6 +9,7 @@ import glob
 
 base_dir = '/sys/bus/w1/devices/'
 device_file = '/w1_slave'
+database_file = 'temperatures.db'
 
 def get_sensors():
   sensors = []
@@ -32,13 +33,31 @@ def read_file_raw(f):
   file.close()
   return lines
 
-def insert_into_db(s, t):
-  conn = sqlite3.connect('temperatures.db')
+def insert_temperature_into_db(s, t):
+  conn = sqlite3.connect(database_file)
   cur = conn.cursor()
   cur.execute("CREATE TABLE IF NOT EXISTS temperatures (sensor TEXT, timestamp INTEGER, temperature REAL)")
   cur.execute("INSERT INTO temperatures (sensor, timestamp, temperature) VALUES (?, ?, ?)", (s, time.time(), t))
   conn.commit()
   conn.close()
   
+def insert_message_into_db(m):
+  conn = sqlite3.connect(database_file)
+  cur = conn.cursor()
+  cur.execute("CREATE TABLE IF NOT EXISTS messages (message TEXT, timestamp INTEGER)")
+  cur.execute("INSERT INTO messages (message, timestamp) VALUES (?, ?, ?)", (m, time.time()))
+  conn.commit()
+  conn.close()
+  
+
 for sensor in get_sensors():
-  insert_into_db(sensor, get_temperature(sensor))
+  temperature = get_temperature(sensor)
+  
+  # Temperature should not be 85, this seems to be a sensor bug, retry.
+  if temperature == 85:
+    temperature = get_temperature(sensor) 
+  
+  if temperature == 85:
+    insert_message_into_db('Unable to read temperature from ' + sensor)
+  else:
+    insert_temperature_into_db(sensor, temperature)
