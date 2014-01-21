@@ -6,10 +6,12 @@
 import sqlite3
 import time
 import glob
+import json
 
 base_dir = '/sys/bus/w1/devices/'
 device_file = '/w1_slave'
 database_file = 'temperatures.db'
+api_url = 'http://temp.certexp.com/deliver/short/'
 
 def get_sensors():
   sensors = []
@@ -48,7 +50,9 @@ def insert_message_into_db(m):
   cur.execute("INSERT INTO messages (message, timestamp) VALUES (?, ?, ?)", (m, time.time()))
   conn.commit()
   conn.close()
-  
+
+# Initializing array used to generate JSON
+temperatures = []
 
 for sensor in get_sensors():
   temperature = get_temperature(sensor)
@@ -61,3 +65,11 @@ for sensor in get_sensors():
     insert_message_into_db('Unable to read temperature from ' + sensor)
   else:
     insert_temperature_into_db(sensor, temperature)
+    temperatures.append({
+      'sensor_id' : sensor,
+      'temperature' : temperature})
+
+if len(temperatures) > 0:
+  # TODO: Add crypto module later, this will fail...
+  encrypted_json = encrypt(json.dumps({'temperatures' : temperatures}))
+  
