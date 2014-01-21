@@ -7,11 +7,13 @@ import sqlite3
 import time
 import glob
 import json
+import urllib.request
+import urllib.parse
 
 base_dir = '/sys/bus/w1/devices/'
 device_file = '/w1_slave'
 database_file = 'temperatures.db'
-api_url = 'http://temp.certexp.com/deliver/short/'
+api_url = 'http://temperature.certexp.com/deliver/short'
 
 def get_sensors():
   sensors = []
@@ -72,4 +74,5 @@ for sensor in get_sensors():
 if len(temperatures) > 0:
   # TODO: Add crypto module later, this will fail...
   encrypted_json = encrypt(json.dumps({'temperatures' : temperatures}))
-  
+  params = urllib.parse.urlencode({'data': encrypted_json})
+  urllib.request.urlopen(api_url, params)
