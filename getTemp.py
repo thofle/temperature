@@ -1,7 +1,4 @@
-#
-# Based on article from Adafruit by Simon Monk
-# http://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/software
-#
+
 
 import sqlite3
 import time
@@ -22,6 +19,8 @@ def get_sensors():
   return sensors
   
 def get_temperature(s):
+  # Based on article from Adafruit by Simon Monk
+  # http://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/software
   lines = read_file_raw(base_dir + s + device_file)
   while lines[0].strip()[-3:] != 'YES':
     time.sleep(0.2)
